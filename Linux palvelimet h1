@@ -1,0 +1,45 @@
+Debian Linuxin asentaminen virtual boxiin
+
+Suoritin Debianin asennusta virtualboxiin https://terokarvinen.com/2021/install-debian-on-virtualbox/ näiden ohjeiden pohjalta.
+
+- Latasin Debianin ISO kuvan https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/current-live/amd64/iso-hybrid/debian-live-11.0.0-amd64-xfce+nonfree.iso
+- latasin virtual boxin komentoriviltä komennolla sudo atp-get install virtualbox
+- avasin virtualboxin ja aloitin uuden virtuaalikoneen luomisen
+- tein seuraavat asetukset uudelle virtuaalikoneelle:
+	-Type: Linux
+	-Version: Debian 864-bit)
+	-Memory Size: 4000 MB
+	-Hard disk: Create a virtual hard disk now -yes
+- Virtual hard diskille asetin File size: 60 GB
+- asetin lataamani Debian ISO kuvan virtuaalikoneeseeni kohdasta settings -> storage -> Controller IDE -> attributes
+- yrittäessäni käynnistää virtuaalikonettani sain seuraavan virheilmoituksen:
+	
+	Kernel driver not installed (rc=-1908)
+
+	The VirtualBox Linux kernel driver is either not loaded or not set up correctly. Please reinstall virtualbox-dkms package and load the kernel
+	module by executing 
+	'modprobe vboxdrv'
+
+	as root.
+	
+- koitin etsiä ratkaisua ongelmaan seuraavista lähteistä:
+	https://askubuntu.com/questions/41118/virtualbox-kernel-driver-not-installed
+	https://askubuntu.com/questions/1014298/cannot-run-vm-virtualbox-on-ubuntu-16-04
+	
+- sain ongelman korjattua seuraamalla seuraavia ohjeita:
+	https://crazytechgo.com/modprobe-error-could-not-insert-vboxdrv-operation-not-permitted/
+	
+- tuon jälkeen sain virtuaalikoneen käyntiin ja live desktopin näkyviin
+
+- aloitin Debianin asennuksen klikkaamalla "install Debian"
+- asetin asennuksessa seuraavaa:
+	Welcome: Language: American English
+	Location: Finland
+	Keyboard: Finnish
+	Partition: Erase disk: yes, Encrypt: no, Boot loader location: Master Boot...
+	
+- Käynnistin Debianin asennuksen
+- Asennus onnistui ja käynnistin virtuaalikoneen uudelleen ja kirjauduin sisään
+ 
+
+ 
