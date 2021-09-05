@@ -1,0 +1,39 @@
+H2
+
+Tehtävä h2 Tero Karvisen kurssilta: https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/ 
+
+- siirryin log hakemistoon terminaalissa komennolla cd /var/log
+- avasin lokitiedostot komennolla sudo tail -F syslog auth.log
+
+Onnistunut tapahtuma lokiin:
+
+- annoin terminaalissa blender ohjelman asentavan komennon sudo apt-get install blender
+- asennus onnistui tuolla komennolla
+- tapahtuma näkyy auth.log lokissa seuraavasti:
+	
+	Sep  5 22:33:53 mikko-ThinkPad-T480 sudo:    mikko : TTY=pts/1 ; PWD=/home/mikko ; USER=root ; COMMAND=/usr/bin/apt-get install blender
+
+
+Epäonnistunut tapahtuma lokiin:
+
+- yritin antaa musescore ohjelman asentavan komennon terminaalissa: sudo apt-get install musescore3
+- tällä kertaa annoin sudolle väärän salasanan jotta autentikointi epäonnistuisi
+- lokeissa tapahtuma näkyy seuraavasti:
+
+	Sep  5 23:14:18 mikko-ThinkPad-T480 sudo:    mikko : TTY=pts/0 ; PWD=/home/mikko ; USER=root ; COMMAND=/usr/bin/apt-get install musescore3
+
+	Sep  5 23:14:45 mikko-ThinkPad-T480 sudo: pam_unix(sudo:auth): auth could not identify password for [mikko]
+	Sep  5 23:14:45 mikko-ThinkPad-T480 sudo:    mikko : 1 incorrect password attempt ; TTY=pts/0 ; PWD=/home/mikko ; USER=root ; 
+	COMMAND=/usr/bin/apt-get install musescore3
+	
+
+Ohjelmien asentamista paketinhallinnasta:
+
+- asensin Gnu Image Manipulation Programmin terminaalista komennolla sudo apt-get install gimp
+- asennus onnistui
+
+- asensin audacity ohjelman terminaalista komennolla sudo apt-get install audacity
+- asennus onnistui
+
+- asensin tux guitar ohjelman terminaalista komennolla sudo apt-get install tuxguitar
+- asennus onnistui
