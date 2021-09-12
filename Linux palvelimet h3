@@ -1,0 +1,42 @@
+H2
+
+Tehtävä h2 Tero Karvisen kurssilta: https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/ 
+
+- asensin apache web-palvelimen terminaalista komennolla sudo apt-get install apache2
+- kokeilin selaimella että apachen oletussivu toimii osoitteesta http://localhost
+- asetin apachen userdir moduulin käyttöön komennolla sudo a2enmod userdir
+- uudelleenkäynnistin apachen komennolla sudo systemctl restart apache2
+- loin kansion public_html
+- loin tiedoston index.html kansioon public_html
+- kirjoitin yksinkertaisen html-sivun tiedostoon index.html:
+	
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>Hello apache</title>
+			<meta charset="utf-8">
+
+		</head>
+		<body>
+			<h1>This is heading<h1>
+			<p>Hello paragraph</p>
+
+		
+		</body>
+	</html>
+	
+- kokeilin selaimella että luonnossivu toimii osoitteesta http://localhost/~mikko/
+- siirryin tarkastelemaan apachen lokeja suraavilla komennoilla:
+	cd /var/log/apache2
+	sudo tail -F access.log access.log.1 
+	
+
+	
+- Esimerkki onnistuneesta sivulatauksesta lokissa, pyyntö osoitteeseen http://localhost/~mikko/:
+
+	::1 - - [12/Sep/2021:23:58:28 +0300] "GET /~mikko/ HTTP/1.1" 200 492 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+
+- Esimerkki epäonnistuneesta sivulatauksesta lokissa:
+
+::1 - - [12/Sep/2021:23:57:41 +0300] "GET /manual HTTP/1.1" 404 488 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+
