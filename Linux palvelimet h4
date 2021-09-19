@@ -1,0 +1,29 @@
+H4
+
+Tehtävä h4 Tero Karvisen kurssilta: https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/ 
+
+- Vuokrasin oman palvelimen Linodelta
+- otin yhteyden virtuaalipalvelimeeni komennolla ssh root@172.104.248.84
+- loin uuden käyttäjän komennolla adduser mikko
+- lisäsin uudelle käyttäjälle sudo-oikeudet komennolla adduser mikko sudo
+- asensin palomuuriohjelman komennolla sudo apt-get install ufw
+- tein palomuuriin reiän ssh-yhteyksiä varten porttiin 22:
+
+	sudo ufw allow 22/tcp
+	sudo ufw enable
+	
+- Latasin apache web-palvelimen komennolla sudo apt-get install apache2
+- loin palomuurille uuden säännön sallia liikenteen portista 80 komennolla sudo ufw allow 80/tcp
+- laitoin apache palvelimen käyntiin ja oletussivun näkymään selaimeen osoitteeseen 172.104.248.84
+
+	sudo a2enmod userdir
+	sudo systemctl restart apache2
+	
+- loin kansion public_html
+- loin kansioon public_html tiedoston index.html
+- nyt osoitteessa http://172.104.248.84/~mikko/ näkyy yksinkertainen web sivu
+
+	
+
+		
+
