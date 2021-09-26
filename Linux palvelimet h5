@@ -1,0 +1,128 @@
+H5
+
+Tehtävä h5 Tero Karvisen kurssilta: https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/ 
+Käytetty lähteenä seuraavia ohjeita: 
+https://terokarvinen.com/2018/name-based-virtual-hosts-on-apache-multiple-websites-to-single-ip-address/
+https://terokarvinen.com/2020/deploy-python-flask-to-production/
+
+- loin salasanan: pwgen 30 1
+- loin teknisen käyttäjän: sudo adduser mikkowsgi
+- lukitsin käyttäjän sudo usermod --lock mikkowsgi
+- lisäsin mikko käyttäjän ryhmään mikkowsgi: sudo adduser $(whoami) mikkowsgi
+- loin mikkowsgi.conf tiedoston: sudoedit /etc/apache2/sites-available/mikkowsgi.conf
+
+<VirtualHost *:80>
+        ServerName mikko.example.com
+
+        WSGIDaemonProcess mikkowsgi user=mikkowsgi group=mikkowsgi threads=5
+        WSGIScriptAlias / /home/mikkowsgi/public_wsgi/mikko.wsgi
+
+        <Directory /home/mikkowsgi/public_wsgi/>
+                WSGIScriptReloading On
+                WSGIProcessGroup mikkowsgi
+                WSGIApplicationGroup %{GLOBAL}
+                Require all granted
+        </Directory>
+</VirtualHost>
+
+
+- sudo a2ensite mikkowsgi.conf
+- sudo a2dissite 000-default.conf
+- /sbin/apache2ctl configtest
+	
+	AH00526: Syntax error on line 4 of /etc/apache2/sites-enabled/mikkowsgi.conf:
+	Invalid command 'WSGIDaemonProcess', perhaps misspelled or defined by a module not included in the server configuration
+	Action 'configtest' failed.
+
+- wsgi moduulia ei oltu asennettu vielä joten asensin sen seuraavalla komennoilla:	
+	sudo apt-get install libapache2-mod-wsgi-py3
+	
+- käynnistin apachen uudelleen: sudo systemctl restart apache2
+- /sbin/apache2ctl configtest
+	Syntax OK
+	
+
+- tarkastelin mitä localhost tulostaa: curl localhost
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>403 Forbidden</title>
+	</head><body>
+	<h1>Forbidden</h1>
+	<p>You don't have permission to access this resource.</p>
+	<hr>
+	<address>Apache/2.4.38 (Debian) Server at localhost Port 80</address>
+	</body></html>
+	
+	
+- loin kansion public_wsgi ja annoin kaikille mikko_wsgi ryhmään kuuluville siihen editointioikeudet:
+	sudo mkdir /home/mikkowsgi/public_wsgi
+	sudo chown mikkowsgi:mikkowsgi /home/mikkowsgi/public_wsgi
+	sudo chmod g=rwxs /home/mikkowsgi/public_wsgi
+	
+	
+- ajoin komennon: curl -si localhost | grep title
+	
+	<title>404 Not Found</title>
+	
+- lisäsin tiedoston mikko.wsgi kansioon public_wsgi: nano /home/mikkowsgi/public_wsgi/mikko.wsgi
+
+
+	import sys
+	assert sys.version_info.major >= 3, "Python version too old in mikko.wsgi!"
+
+	sys.path.insert(0, '/home/mikkowsgi/public_wsgi/')
+	from hello import app as application
+	
+- ajoin komennon: curl -s localhost | grep title
+	
+	<title>500 Internal Server Error</title>
+	
+- loin hello.py tiedoston kansioon public_wsgi: nano /home/mikkowsgi/public_wsgi/hello.py
+
+	from flask import Flask
+	app = Flask(__name__)
+
+	@app.route("/")
+	def hello():
+		return "Hello web"
+	
+	
+- sain vieläkin virheilmoitusta localhostista, apachen error logia tutkimalla selvisi että python flask moduulia ei oltu asennettu.
+Asensin sen ja sain vielä saman virheilmoituksen. Huomasin että olin asentanut vanhan versin flaskistä ja asensin uudemman.	
+	curl localhost
+		<title>500 Internal Server Error</title>
+		
+	sudo tail -l /var/log/apache2/error.log
+
+		[Fri Sep 24 13:26:31.061326 2021] [wsgi:error] [pid 11253:tid 139696127182592] [remote ::1:58016]     from flask import Flask
+		[Fri Sep 24 13:26:31.061353 2021] [wsgi:error] [pid 11253:tid 139696127182592] [remote ::1:58016] ModuleNotFoundError: No module named 'flask'
+
+		
+	sudo apt-get install python-flask
+	curl localhost
+		<title>500 Internal Server Error</title>
+		
+		[Fri Sep 24 13:29:59.622864 2021] [wsgi:error] [pid 11929:tid 139696160753408] [remote ::1:58020]     from flask import Flask
+		[Fri Sep 24 13:29:59.622882 2021] [wsgi:error] [pid 11929:tid 139696160753408] [remote ::1:58020] ModuleNotFoundError: No module named 'flask'
+
+		
+	apt-cache search flask
+	sudo apt-get install python3-flask
+	
+	
+- nyt localhost tulosti yksinkertaisen web sivuni: 
+
+	curl localhost
+
+	Hello web
+		
+			
+			
+			
+
+
+
+
+
+
