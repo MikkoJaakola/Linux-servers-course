@@ -5,6 +5,46 @@ Käytetty lähteenä seuraavia ohjeita:
 https://terokarvinen.com/2018/name-based-virtual-hosts-on-apache-multiple-websites-to-single-ip-address/
 https://terokarvinen.com/2020/deploy-python-flask-to-production/
 
+
+
+Name based virtual host simuloitu hosts tiedoston avulla:
+
+- korvasin apachen oletussivun: echo "Default" | sudo tee /var/www/html/index.html
+- lisäsin uuden name name based virtual hostin: sudoedit /etc/apache2/sites-available/hello.example.com.conf
+
+	<VirtualHost *:80>
+	 ServerName hello.example.com
+	 ServerAlias www.hello.example.com
+	 DocumentRoot /home/mikko/publicsites/hello.example.com
+	 <Directory /home/mikko/publicsites/hello.example.com>
+	   Require all granted
+	 </Directory>
+	</VirtualHost>
+	
+
+- "enabloin" uuden hello.example.com sivun: sudo a2ensite hello.example.com
+- käynnistin apachen uudelleen: sudo systemctl reload apache2
+- loin uuden kansion:  mkdir -p /home/mikko/publicsites/hello.example.com
+- loin uuden tiedoston kansioon hello.example.com: echo hello > /home/mikko/publicsites/hello.example.com/index.html
+- testasin uutta sivuani komennolla: curl -H 'Host: hello.example.com' localhost
+- testi tulosti sivuni oikein: hello
+- editoin hosts tiedostoa: sudoedit /etc/hosts
+	
+	127.0.0.1       localhost
+	127.0.1.1       mikko-ThinkPad-T480
+	127.0.0.1       hello.example.com
+	
+- kokeilin selaimella osoitetta: http://hello.example.com/
+- sain esimerkkisivuni näkyviin
+
+
+
+
+
+
+
+
+
 - loin salasanan: pwgen 30 1
 - loin teknisen käyttäjän: sudo adduser mikkowsgi
 - lukitsin käyttäjän sudo usermod --lock mikkowsgi
