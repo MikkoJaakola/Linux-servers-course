@@ -41,10 +41,11 @@ Name based virtual host simuloitu hosts tiedoston avulla:
 
 
 
+Julkinen nimi ja python-flask ohjelman tuotanto asennus
 
 
 
-
+- otin ssh yhteyden virtuaalikoneelleni: ssh mikko@172.104.248.84
 - loin salasanan: pwgen 30 1
 - loin teknisen käyttäjän: sudo adduser mikkowsgi
 - lukitsin käyttäjän sudo usermod --lock mikkowsgi
