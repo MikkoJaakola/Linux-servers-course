@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% for text in texts %}
+		<p>{{ text.name }}: {{ text.text}} - 
+		<a href="{{ text.id }}/edit">Edit</a> - 
+		<a href="{{ text.id }}/delete">Delete</a>
+		</p>
+	{% endfor %}
+
+{% endblock content %}
