@@ -1,0 +1,26 @@
+Osa tehtävää h5 Tero Karvisen kurssilta: 
+https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/
+
+Uuden Linux-komennon tekeminen:
+
+Tein uuden komennon joka toimii Linuxin terminaalista:
+
+- loin tekstitiedoston komennolla: nano someinfo
+- kirjoitin tekstitiedosttoon seuraavaa:
+	#!/bin/bash
+	date --iso=min
+	whoami
+	cat /etc/lsb-release
+
+- muutin tiedoston oikeuksia komennolla: chmod ugo+x someinfo
+- kopioin tiedoston uuteen kansioon komennolla: sudo cp -v someinfo /usr/local/bin/
+
+- nyt komento someinfo tulostaa omalla laitteellani suraavaa:
+
+	2021-10-04T18:52+03:00
+	mikko
+	DISTRIB_ID=Ubuntu
+	DISTRIB_RELEASE=20.04
+	DISTRIB_CODENAME=focal
+	DISTRIB_DESCRIPTION="Ubuntu 20.04 LTS"
+
