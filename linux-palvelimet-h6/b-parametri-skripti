@@ -1,0 +1,18 @@
+Osa tehtävää h5 Tero Karvisen kurssilta: 
+https://terokarvinen.com/2021/linux-server-course-linux-palvelimet-ict4tn021-3016/
+
+Parametrin hyödyntaminen skriptissä:
+
+Tein uuden komennon joka toimii Linuxin terminaalista:
+
+- loin tekstitiedoston komennolla: nano sayhi
+- kirjoitin tekstitiedosttoon seuraavaa:
+	#!/bin/bash
+	echo kato $1 terve
+
+
+- muutin tiedoston oikeuksia komennolla: chmod ugo+x sayhi
+- kopioin tiedoston uuteen kansioon komennolla: sudo cp -v sayhi /usr/local/bin/
+
+- nyt esimerkiksi komento sayhi Sauli tulostaa omalla laitteellani seuraavaa:
+	kato Sauli terve
